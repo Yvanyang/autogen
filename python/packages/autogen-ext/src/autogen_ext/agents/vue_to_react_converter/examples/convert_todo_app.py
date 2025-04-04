@@ -1,13 +1,8 @@
 import asyncio
 import os
 import sys
-from pathlib import Path
 
-current_dir = Path(__file__).resolve().parent
-repo_root = current_dir.parent.parent.parent.parent.parent.parent.parent
-sys.path.append(str(repo_root))
-
-from autogen.python.packages.autogen_core.src.autogen_core.models import ChatCompletionClient
+from autogen_core.models import ChatCompletionClient
 from autogen_ext.agents.vue_to_react_converter import VueToReactConverter
 
 async def main():

@@ -5,7 +5,34 @@ import json
 from autogen_core.models import ChatCompletionClient
 from autogen_agentchat.agents import AssistantAgent, UserProxyAgent
 from autogen_agentchat.teams import SelectorGroupChat
-from autogen_agentchat.teams.group_chat import TextMentionTermination, MaxMessageTermination
+
+class TextMentionTermination:
+    def __init__(self, text):
+        self.text = text
+    
+    def __call__(self, messages):
+        return any(self.text in str(message) for message in messages)
+    
+    def __or__(self, other):
+        return CombinedTermination(self, other)
+
+class MaxMessageTermination:
+    def __init__(self, max_messages):
+        self.max_messages = max_messages
+    
+    def __call__(self, messages):
+        return len(messages) >= self.max_messages
+    
+    def __or__(self, other):
+        return CombinedTermination(self, other)
+
+class CombinedTermination:
+    def __init__(self, condition1, condition2):
+        self.condition1 = condition1
+        self.condition2 = condition2
+    
+    def __call__(self, messages):
+        return self.condition1(messages) or self.condition2(messages)
 
 from .constants import (
     ANALYSIS_AGENT_NAME,

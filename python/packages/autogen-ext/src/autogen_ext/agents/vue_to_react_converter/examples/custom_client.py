@@ -13,14 +13,15 @@ from pydantic import BaseModel
 class CustomChatCompletionClient(ChatCompletionClient):
     """
     A custom implementation of ChatCompletionClient that works offline.
-    This simulates the behavior of an LLM for testing purposes.
+    This simulates the behavior of an LLM for testing purposes without requiring
+    any API keys or external services.
     """
     
     def __init__(self, **kwargs):
         self.config = kwargs
         self._usage = RequestUsage(prompt_tokens=0, completion_tokens=0)
         self._total_usage = RequestUsage(prompt_tokens=0, completion_tokens=0)
-        print(f"Initialized CustomChatCompletionClient with config: {json.dumps(kwargs, indent=2)}")
+        print("Initialized CustomChatCompletionClient in offline simulation mode")
     
     async def create_stream(
         self,

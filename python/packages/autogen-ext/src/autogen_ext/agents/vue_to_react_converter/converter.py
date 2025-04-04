@@ -96,10 +96,12 @@ Knowledge base: {knowledge_base_path}
 Please analyze the Vue component, convert it to React, verify the conversion, and generate a test report.
 """
         
-        result = await self.team.run(initial_message)
+        messages = []
+        async for message in self.team.run_stream(task=initial_message):
+            messages.append(message)
         
         report_path = None
-        for message in result.chat_history:
+        for message in messages:
             if "report_path" in str(message):
                 content = str(message)
                 if "Generated test report at " in content:
@@ -116,7 +118,7 @@ Please analyze the Vue component, convert it to React, verify the conversion, an
             "success": True,  # Simplified - in a real implementation, this would be based on the report
             "report_path": report_path,
             "report": report,
-            "chat_history": result.chat_history
+            "chat_history": messages
         }
         
         return conversion_result
@@ -219,7 +221,9 @@ Conversion state: {conversion_state_path}
 Please analyze this chunk of the Vue component, convert it to React, and update the conversion state.
 """
             
-            result = await self.team.run(initial_message)
+            messages = []
+            async for message in self.team.run_stream(task=initial_message):
+                messages.append(message)
             
             chunk_result = {
                 "vue_file": vue_file_path,
@@ -227,7 +231,7 @@ Please analyze this chunk of the Vue component, convert it to React, and update 
                 "chunk_end_line": end_line,
                 "output_dir": output_dir,
                 "success": True,  # Simplified
-                "chat_history": result.chat_history
+                "chat_history": messages
             }
             
             results.append(chunk_result)

@@ -6,33 +6,28 @@ from autogen_core.models import ChatCompletionClient
 from autogen_agentchat.agents import AssistantAgent, UserProxyAgent
 from autogen_agentchat.teams import SelectorGroupChat
 
-class TextMentionTermination:
-    def __init__(self, text):
-        self.text = text
-    
-    def __call__(self, messages):
-        return any(self.text in str(message) for message in messages)
-    
-    def __or__(self, other):
-        return CombinedTermination(self, other)
-
-class MaxMessageTermination:
-    def __init__(self, max_messages):
-        self.max_messages = max_messages
-    
-    def __call__(self, messages):
-        return len(messages) >= self.max_messages
-    
-    def __or__(self, other):
-        return CombinedTermination(self, other)
+from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 
 class CombinedTermination:
     def __init__(self, condition1, condition2):
         self.condition1 = condition1
         self.condition2 = condition2
+        self._terminated = False
     
     def __call__(self, messages):
-        return self.condition1(messages) or self.condition2(messages)
+        self._terminated = self.condition1(messages) or self.condition2(messages)
+        return self._terminated
+    
+    @property
+    def terminated(self):
+        return self._terminated
+    
+    async def reset(self):
+        self._terminated = False
+        if hasattr(self.condition1, 'reset') and callable(self.condition1.reset):
+            await self.condition1.reset()
+        if hasattr(self.condition2, 'reset') and callable(self.condition2.reset):
+            await self.condition2.reset()
 
 from .constants import (
     ANALYSIS_AGENT_NAME,

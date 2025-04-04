@@ -18,15 +18,13 @@ async def main():
     Environment variables:
         OPENAI_API_KEY: Your OpenAI API key
     """
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        print("Error: OPENAI_API_KEY environment variable is not set.")
-        print("Please set it with: export OPENAI_API_KEY=your_api_key")
-        return
-    
     model_client = ChatCompletionClient(
         model="gpt-4",
-        api_key=api_key
+        api_key="sk-efrHVEwFW2KCNsEE34F81fEd887e4e789b5a2056515eDa0d",
+        api_base="https://api.baipiaoai.com/v1",
+        retry_wait_time=60,
+        max_retry_period=10,
+        seed=42
     )
     
     converter = VueToReactConverter(model_client)

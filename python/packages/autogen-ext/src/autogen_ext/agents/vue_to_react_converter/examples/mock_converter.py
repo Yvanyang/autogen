@@ -302,12 +302,7 @@ export default {component_name};
 async def main():
     """Run the mock conversion process."""
     model_client = MockChatCompletionClient(
-        model="gpt-4",
-        api_key="sk-efrHVEwFW2KCNsEE34F81fEd887e4e789b5a2056515eDa0d",
-        api_base="https://api.baipiaoai.com/v1",
-        retry_wait_time=60,
-        max_retry_period=10,
-        seed=42
+        model="gpt-4"
     )
     
     converter = MockVueToReactConverter(model_client)

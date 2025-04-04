@@ -42,14 +42,47 @@ This system uses a team of specialized agents to convert Vue code to React code 
 
 ### Quick Start
 
-The easiest way to get started is to use the provided example script:
+The easiest way to get started is to use the provided example script with the custom client that works offline:
 
 ```bash
+# Navigate to the examples directory
 cd python/packages/autogen-ext/src/autogen_ext/agents/vue_to_react_converter/examples
+
+# Create output directory if it doesn't exist
+mkdir -p output
+
+# Run the conversion script
 python convert_todo_app.py
 ```
 
-This will convert the included Vue Todo app to React and generate a test report.
+This will convert the included Vue Todo app to React and generate a test report. The example uses a custom client that simulates LLM responses, so it works without requiring any API keys.
+
+### Configuration
+
+If you want to use your own API configuration instead of the custom client:
+
+1. Set up your API credentials as environment variables:
+   ```bash
+   # For OpenAI API
+   export OPENAI_API_KEY="your-api-key"
+   
+   # For custom API endpoints
+   export API_BASE="https://your-custom-endpoint/v1"
+   ```
+
+2. Modify the example script to use your configuration:
+   ```python
+   # Create a model client with your configuration
+   from autogen_core.models import ChatCompletionClient
+   
+   model_client = ChatCompletionClient(
+       model="gpt-4",
+       api_key=os.environ.get("OPENAI_API_KEY")
+   )
+   
+   # Then use this model_client with the converter
+   converter = VueToReactConverter(model_client)
+   ```
 
 ### Usage Options
 

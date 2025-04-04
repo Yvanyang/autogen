@@ -30,7 +30,8 @@ async def main():
     # Create a model client
     model_client = ChatCompletionClient(
         model="gpt-4",
-        api_key="your-api-key"
+        # Use environment variable for API key
+        api_key=os.environ.get("OPENAI_API_KEY")
     )
     
     # Create the converter

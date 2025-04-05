@@ -175,7 +175,9 @@ class MigrationPlanner:
         """
         plan = self.generate_migration_plan()
         
-        html = """
+        total_components = plan["total_components"]
+        max_lines = plan["max_lines_per_chunk"]
+        html = f"""
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -183,60 +185,62 @@ class MigrationPlanner:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Vue to React Migration Plan</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-                h1, h2, h3 { color: #333; }
-                .container { max-width: 1200px; margin: 0 auto; }
-                .chunk { margin-bottom: 30px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
-                .chunk-header { background-color: #f5f5f5; padding: 10px 15px; border-bottom: 1px solid #ddd; }
-                .chunk-body { padding: 15px; }
-                .component-list { list-style-type: none; padding: 0; }
-                .component-item { padding: 10px; border-bottom: 1px solid #eee; }
-                .component-item:last-child { border-bottom: none; }
-                .component-info { display: flex; justify-content: space-between; }
-                .component-name { font-weight: bold; }
-                .component-path { color: #666; }
-                .component-lines { color: #0077cc; }
-                .progress-bar { height: 10px; background-color: #e0e0e0; border-radius: 5px; margin-top: 5px; }
-                .progress { height: 100%; background-color: #4caf50; border-radius: 5px; }
+                body {{ font-family: Arial, sans-serif; margin: 0; padding: 20px; }}
+                h1, h2, h3 {{ color: #333; }}
+                .container {{ max-width: 1200px; margin: 0 auto; }}
+                .chunk {{ margin-bottom: 30px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }}
+                .chunk-header {{ background-color: #f5f5f5; padding: 10px 15px; border-bottom: 1px solid #ddd; }}
+                .chunk-body {{ padding: 15px; }}
+                .component-list {{ list-style-type: none; padding: 0; }}
+                .component-item {{ padding: 10px; border-bottom: 1px solid #eee; }}
+                .component-item:last-child {{ border-bottom: none; }}
+                .component-info {{ display: flex; justify-content: space-between; }}
+                .component-name {{ font-weight: bold; }}
+                .component-path {{ color: #666; }}
+                .component-lines {{ color: #0077cc; }}
+                .progress-bar {{ height: 10px; background-color: #e0e0e0; border-radius: 5px; margin-top: 5px; }}
+                .progress {{ height: 100%; background-color: #4caf50; border-radius: 5px; }}
             </style>
         </head>
         <body>
             <div class="container">
                 <h1>Vue to React Migration Plan</h1>
-                <p>Total Components: {}</p>
-                <p>Max Lines Per Chunk: {}</p>
+                <p>Total Components: {total_components}</p>
+                <p>Max Lines Per Chunk: {max_lines}</p>
                 
                 <h2>Migration Chunks</h2>
-        """.format(plan["total_components"], plan["max_lines_per_chunk"])
+        """
         
         for chunk in plan["chunks"]:
-            html += """
+            chunk_id = chunk["id"]
+            total_lines = chunk["total_lines"]
+            html += f"""
                 <div class="chunk">
                     <div class="chunk-header">
-                        <h3>Chunk {} ({} lines)</h3>
+                        <h3>Chunk {chunk_id} ({total_lines} lines)</h3>
                     </div>
                     <div class="chunk-body">
                         <ul class="component-list">
-            """.format(chunk["id"], chunk["total_lines"])
+            """
             
             for component in chunk["components"]:
-                html += """
+                component_name = component["name"]
+                component_lines = component["lines"]
+                component_path = component["file_path"]
+                progress_width = min(100, (component_lines / plan["max_lines_per_chunk"]) * 100)
+                
+                html += f"""
                             <li class="component-item">
                                 <div class="component-info">
-                                    <span class="component-name">{}</span>
-                                    <span class="component-lines">{} lines</span>
+                                    <span class="component-name">{component_name}</span>
+                                    <span class="component-lines">{component_lines} lines</span>
                                 </div>
-                                <div class="component-path">{}</div>
+                                <div class="component-path">{component_path}</div>
                                 <div class="progress-bar">
-                                    <div class="progress" style="width: {}%;"></div>
+                                    <div class="progress" style="width: {progress_width}%;"></div>
                                 </div>
                             </li>
-                """.format(
-                    component["name"],
-                    component["lines"],
-                    component["file_path"],
-                    min(100, (component["lines"] / plan["max_lines_per_chunk"]) * 100)
-                )
+                """
             
             html += """
                         </ul>
@@ -250,11 +254,12 @@ class MigrationPlanner:
         """
         
         for component, deps in plan["dependencies"].items():
-            html += """
+            deps_str = ", ".join(deps)
+            html += f"""
                     <li>
-                        <strong>{}</strong> depends on: {}
+                        <strong>{component}</strong> depends on: {deps_str}
                     </li>
-            """.format(component, ", ".join(deps))
+            """
         
         html += """
                 </ul>

@@ -115,7 +115,8 @@ class DocumentationGenerator:
         Returns:
             HTML index document as a string
         """
-        html = """
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        html = f"""
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -123,24 +124,24 @@ class DocumentationGenerator:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Vue Components Documentation</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-                h1, h2, h3 { color: #333; }
-                .container { max-width: 1200px; margin: 0 auto; }
-                .component-list { list-style-type: none; padding: 0; }
-                .component-item { padding: 10px; border-bottom: 1px solid #eee; }
-                .component-item:hover { background-color: #f9f9f9; }
-                a { color: #0077cc; text-decoration: none; }
-                a:hover { text-decoration: underline; }
+                body {{ font-family: Arial, sans-serif; margin: 0; padding: 20px; }}
+                h1, h2, h3 {{ color: #333; }}
+                .container {{ max-width: 1200px; margin: 0 auto; }}
+                .component-list {{ list-style-type: none; padding: 0; }}
+                .component-item {{ padding: 10px; border-bottom: 1px solid #eee; }}
+                .component-item:hover {{ background-color: #f9f9f9; }}
+                a {{ color: #0077cc; text-decoration: none; }}
+                a:hover {{ text-decoration: underline; }}
             </style>
         </head>
         <body>
             <div class="container">
                 <h1>Vue Components Documentation</h1>
-                <p>Generated: {}</p>
+                <p>Generated: {timestamp}</p>
                 
                 <h2>Components</h2>
                 <ul class="component-list">
-        """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        """
         
         for file_path, analysis in analyses.items():
             component_name = analysis["component_name"]

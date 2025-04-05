@@ -124,7 +124,10 @@ The ecosystem also supports two essential _developer tools_:
 - [AutoGen Studio](./python/packages/autogen-studio/) provides a no-code GUI for building multi-agent applications.
 - [AutoGen Bench](./python/packages/agbench/) provides a benchmarking suite for evaluating agent performance.
 
-You can use the AutoGen framework and developer tools to create applications for your domain. For example, [Magentic-One](./python/packages/magentic-one-cli/) is a state-of-the-art multi-agent team built using AgentChat API and Extensions API that can handle a variety of tasks that require web browsing, code execution, and file handling.
+You can use the AutoGen framework and developer tools to create applications for your domain. For example:
+
+- [Magentic-One](./python/packages/magentic-one-cli/) is a state-of-the-art multi-agent team built using AgentChat API and Extensions API that can handle a variety of tasks that require web browsing, code execution, and file handling.
+- [Vue to React Converter](./python/packages/autogen-ext/src/autogen_ext/agents/vue_to_react_converter/) is a multi-agent system that transforms Vue components to React while maintaining functionality, using specialized agents for code analysis, conversion, verification, and reporting.
 
 With AutoGen you get to join and contribute to a thriving ecosystem. We host weekly office hours and talks with maintainers and community. We also have a [Discord server](https://aka.ms/autogen-discord) for real-time chat, GitHub Discussions for Q&A, and a blog for tutorials and updates.
 

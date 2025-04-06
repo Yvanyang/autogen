@@ -116,9 +116,21 @@ class CodeBERTRepositoryMemory(Memory):
         """Load CodeBERT model and tokenizer."""
         if self._model is None or self._tokenizer is None:
             logger.info(f"Loading CodeBERT model: {self._config.model_name}")
-            self._tokenizer = AutoTokenizer.from_pretrained(self._config.model_name)
-            self._model = AutoModel.from_pretrained(self._config.model_name).to(self._device)
-            self._model.eval()  # Set model to evaluation mode
+            try:
+                self._tokenizer = AutoTokenizer.from_pretrained(self._config.model_name)
+                
+                try:
+                    self._model = AutoModel.from_pretrained(
+                        self._config.model_name,
+                        device_map=self._device,
+                    )
+                except TypeError:
+                    self._model = AutoModel.from_pretrained(self._config.model_name).to(self._device)
+                
+                self._model.eval()  # Set model to evaluation mode
+            except Exception as e:
+                logger.error(f"Error loading CodeBERT model: {e}")
+                raise RuntimeError(f"Failed to load CodeBERT model: {e}")
     
     async def _get_embedding(self, text: str) -> np.ndarray:
         """Get embedding for a text using CodeBERT."""

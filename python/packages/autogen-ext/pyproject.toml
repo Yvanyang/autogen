@@ -41,6 +41,7 @@ llama-cpp = [
 
 graphrag = ["graphrag>=1.0.1"]
 chromadb = ["chromadb"]
+code-repository = ["chromadb", "gitpython"]
 web-surfer = [
     "autogen-agentchat==0.4.9",
     "playwright>=1.48.0",

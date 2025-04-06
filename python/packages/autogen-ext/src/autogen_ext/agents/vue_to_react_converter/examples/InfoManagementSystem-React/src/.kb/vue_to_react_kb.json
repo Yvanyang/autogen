@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "rules": [
+    "Vue template tags become JSX",
+    "Vue data() becomes React useState",
+    "Vue methods become React functions",
+    "Vue lifecycle hooks map to React useEffect",
+    "Vue v-if becomes React conditional rendering with &&",
+    "Vue v-for becomes React map() function",
+    "Vue v-model becomes React controlled components with onChange",
+    "Vue props become React props",
+    "Vue computed properties become React useMemo",
+    "Vue watchers become React useEffect",
+    "Vue components become React components",
+    "Vue single-file components are split into separate JS and CSS files"
+  ]
+}

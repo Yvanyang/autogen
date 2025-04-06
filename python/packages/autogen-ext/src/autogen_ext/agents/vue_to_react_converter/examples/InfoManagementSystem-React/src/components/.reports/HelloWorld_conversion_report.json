@@ -1,0 +1,7 @@
+{
+  "source_file": "InfoManagementSystem/node_modules/@vue/cli-service/generator/template/src/components/HelloWorld.vue",
+  "target_file": "InfoManagementSystem-React/src/components/HelloWorld.jsx",
+  "css_file": "InfoManagementSystem-React/src/components/HelloWorld.css",
+  "conversion_status": "success",
+  "timestamp": "2025-04-05T17:07:31.168840"
+}

@@ -1,0 +1,7 @@
+{
+  "source_file": "InfoManagementSystem/src/components/PageManager.vue",
+  "target_file": "InfoManagementSystem-React/src/components/PageManager.jsx",
+  "css_file": "InfoManagementSystem-React/src/components/PageManager.css",
+  "conversion_status": "success",
+  "timestamp": "2025-04-05T17:07:36.207507"
+}

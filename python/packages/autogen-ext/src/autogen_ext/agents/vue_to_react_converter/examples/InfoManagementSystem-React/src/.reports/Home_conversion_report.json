@@ -1,0 +1,7 @@
+{
+  "source_file": "InfoManagementSystem/node_modules/@vue/cli-plugin-router/generator/template/src/views/Home.vue",
+  "target_file": "InfoManagementSystem-React/src/Home.jsx",
+  "css_file": "InfoManagementSystem-React/src/Home.css",
+  "conversion_status": "success",
+  "timestamp": "2025-04-05T17:07:34.191003"
+}

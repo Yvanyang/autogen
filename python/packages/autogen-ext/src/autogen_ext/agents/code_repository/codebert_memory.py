@@ -124,8 +124,26 @@ class CodeBERTRepositoryMemory(Memory):
                         self._config.model_name,
                         device_map=self._device,
                     )
-                except TypeError:
-                    self._model = AutoModel.from_pretrained(self._config.model_name).to(self._device)
+                except (TypeError, ValueError, AttributeError, NameError) as e:
+                    logger.warning(f"Failed to load model with device_map: {e}")
+                    try:
+                        self._model = AutoModel.from_pretrained(
+                            self._config.model_name,
+                            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                        ).to(self._device)
+                    except (TypeError, ValueError, AttributeError, NameError) as e:
+                        logger.warning(f"Failed to load model with torch_dtype: {e}")
+                        try:
+                            self._model = AutoModel.from_pretrained(
+                                self._config.model_name,
+                                trust_remote_code=True,
+                            ).to(self._device)
+                        except (TypeError, ValueError, AttributeError, NameError) as e:
+                            logger.warning(f"Failed to load model with basic options: {e}")
+                            self._model = AutoModel.from_pretrained(
+                                self._config.model_name,
+                                _fast_init=False,
+                            ).to(self._device)
                 
                 self._model.eval()  # Set model to evaluation mode
             except Exception as e:

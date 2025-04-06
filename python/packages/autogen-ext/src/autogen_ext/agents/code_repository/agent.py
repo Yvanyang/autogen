@@ -111,8 +111,8 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
             logger.info("Repository already vectorized. Ready to answer questions.")
         
         if self._assistant_agent is None:
-            from autogen_core import load_component
-            model_client = load_component(self._config.model_client)
+            from autogen_core._component_config import ComponentConfig
+            model_client = ComponentConfig.load_component(self._config.model_client)
             
             self._assistant_agent = AssistantAgent(
                 name=self._config.name,
@@ -136,6 +136,9 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
         if not self._assistant_agent:
             await self.prepare()
         
+        if not self._assistant_agent:
+            raise RuntimeError("Failed to initialize assistant agent")
+            
         response = await self._assistant_agent.run(task=task)
         return response
     

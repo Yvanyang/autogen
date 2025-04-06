@@ -4,7 +4,7 @@ import tempfile
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from autogen_core import load_component
+from autogen_core._component_config import ComponentConfig
 from autogen_ext.agents.code_repository.agent import CodeRepositoryAgent, CodeRepositoryAgentConfig
 from autogen_ext.agents.code_repository.memory import CodeRepositoryMemory
 
@@ -40,7 +40,7 @@ def mock_model_client():
 @pytest.mark.asyncio
 async def test_code_repository_agent_initialization(temp_dir, db_dir, mock_model_client):
     """Test initialization of CodeRepositoryAgent."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_core._component_config.ComponentConfig.load_component", return_value=mock_model_client):
         agent = CodeRepositoryAgent(
             config=CodeRepositoryAgentConfig(
                 name="test_agent",
@@ -59,7 +59,7 @@ async def test_code_repository_agent_initialization(temp_dir, db_dir, mock_model
 @pytest.mark.asyncio
 async def test_code_repository_agent_prepare(temp_dir, db_dir, mock_model_client):
     """Test preparing the agent."""
-    with patch("autogen_core.load_component", return_value=mock_model_client), \
+    with patch("autogen_core._component_config.ComponentConfig.load_component", return_value=mock_model_client), \
          patch("autogen_ext.agents.code_repository.agent.AssistantAgent") as mock_assistant:
         
         mock_memory = AsyncMock()
@@ -90,7 +90,7 @@ async def test_code_repository_agent_prepare(temp_dir, db_dir, mock_model_client
 @pytest.mark.asyncio
 async def test_code_repository_agent_run(temp_dir, db_dir, mock_model_client):
     """Test running a query with the agent."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_core._component_config.ComponentConfig.load_component", return_value=mock_model_client):
         mock_assistant = AsyncMock()
         mock_assistant.run = AsyncMock(return_value="Test response")
         

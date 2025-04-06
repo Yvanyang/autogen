@@ -586,14 +586,30 @@ class BaseOpenAIChatCompletionClient(ChatCompletionClient):
             )
         else:
             # Use the regular client
-            future = asyncio.ensure_future(
-                self._client.chat.completions.create(
-                    messages=create_params.messages,
-                    stream=False,
-                    tools=(create_params.tools if len(create_params.tools) > 0 else NOT_GIVEN),
-                    **create_params.create_args,
+            if self._create_args["model"].startswith("deepseek-"):
+                filtered_args = {k: v for k, v in create_params.create_args.items() 
+                                if k not in ["temperature", "top_p", "frequency_penalty", "presence_penalty"]}
+                
+                if "temperature" in create_params.create_args:
+                    filtered_args["temperature"] = float(create_params.create_args["temperature"])
+                
+                future = asyncio.ensure_future(
+                    self._client.chat.completions.create(
+                        messages=create_params.messages,
+                        stream=False,
+                        tools=(create_params.tools if len(create_params.tools) > 0 else NOT_GIVEN),
+                        **filtered_args,
+                    )
                 )
-            )
+            else:
+                future = asyncio.ensure_future(
+                    self._client.chat.completions.create(
+                        messages=create_params.messages,
+                        stream=False,
+                        tools=(create_params.tools if len(create_params.tools) > 0 else NOT_GIVEN),
+                        **create_params.create_args,
+                    )
+                )
 
         if cancellation_token is not None:
             cancellation_token.link_future(future)
@@ -1344,6 +1360,11 @@ class OpenAIChatCompletionClient(BaseOpenAIChatCompletionClient, Component[OpenA
                 copied_args["base_url"] = _model_info.ANTHROPIC_OPENAI_BASE_URL
             if "api_key" not in copied_args and "ANTHROPIC_API_KEY" in os.environ:
                 copied_args["api_key"] = os.environ["ANTHROPIC_API_KEY"]
+        if copied_args["model"].startswith("deepseek-"):
+            if "base_url" not in copied_args:
+                copied_args["base_url"] = _model_info.DEEPSEEK_OPENAI_BASE_URL
+            if "api_key" not in copied_args and "DEEPSEEK_API_KEY" in os.environ:
+                copied_args["api_key"] = os.environ["DEEPSEEK_API_KEY"]
 
         client = _openai_client_from_config(copied_args)
         create_args = _create_args_from_config(copied_args)

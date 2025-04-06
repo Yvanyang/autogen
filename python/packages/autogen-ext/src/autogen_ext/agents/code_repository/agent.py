@@ -3,7 +3,8 @@ import os
 from typing import Any, Dict, List, Optional, Union
 
 from autogen_agentchat.agents import AssistantAgent
-from autogen_core import Component
+from autogen_core import Component, ComponentBase
+from autogen_core._component_config import ComponentFromConfig, ComponentToConfig, ComponentSchemaType, ComponentLoader
 from autogen_core.memory import Memory
 from autogen_core.models import ChatCompletionClient
 from autogen_ext.agents.code_repository.memory import CodeRepositoryMemory, CodeRepositoryMemoryConfig
@@ -31,11 +32,10 @@ class CodeRepositoryAgentConfig(BaseModel):
         default="A specialized agent for code repository understanding and question answering",
         description="Description of the agent",
     )
+    api_key: Optional[str] = Field(default=None, description="API key for the model client")
+    api_base: Optional[str] = Field(default=None, description="API base URL for the model client")
 
-class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
-    """Agent for code repository vectorization and querying."""
-    
-    component_type = "code_repository_agent"
+class CodeRepositoryAgent(ComponentBase, ComponentFromConfig, ComponentToConfig, ComponentSchemaType, ComponentLoader):
     """Agent for code repository vectorization and querying.
     
     This agent extends AssistantAgent and provides functionality to vectorize and query
@@ -61,7 +61,7 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
                     name="repo_agent",
                     repository_url="https://github.com/username/repo",
                     persistence_path="./code_repo_db",
-                    model_client=model_client.dump_component().dict(),
+                    model_client=model_client.dump_component().model_dump(),
                 )
             )
             
@@ -76,6 +76,7 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
         ```
     """
     
+    component_type = "code_repository_agent"
     component_config_schema = CodeRepositoryAgentConfig
     
     def __init__(self, config: CodeRepositoryAgentConfig) -> None:
@@ -114,8 +115,41 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
             logger.info("Repository already vectorized. Ready to answer questions.")
         
         if self._assistant_agent is None:
-            from autogen_core._component_config import ComponentLoader
-            model_client = ComponentLoader.load_component(self._config.model_client)
+            model_client_config = self._config.model_client
+            
+            if self._config.api_key:
+                if isinstance(model_client_config, dict):
+                    if "config" in model_client_config:
+                        model_client_config["config"]["api_key"] = self._config.api_key
+                    else:
+                        model_client_config["api_key"] = self._config.api_key
+            
+            if self._config.api_base:
+                if isinstance(model_client_config, dict):
+                    if "config" in model_client_config:
+                        model_client_config["config"]["api_base"] = self._config.api_base
+                    else:
+                        model_client_config["api_base"] = self._config.api_base
+            
+            try:
+                model_client = self.load_component(model_client_config)
+            except Exception as e:
+                logger.warning(f"Failed to load model client as component: {e}")
+                
+                try:
+                    from autogen_ext.models.openai import OpenAIChatCompletionClient
+                    
+                    if isinstance(model_client_config, dict):
+                        if "config" in model_client_config:
+                            config = model_client_config["config"]
+                        else:
+                            config = model_client_config
+                            
+                        model_client = OpenAIChatCompletionClient(**config)
+                    else:
+                        raise ValueError(f"Unsupported model client configuration: {model_client_config}")
+                except Exception as inner_e:
+                    raise RuntimeError(f"Failed to create model client: {inner_e}") from e
             
             self._assistant_agent = AssistantAgent(
                 name=self._config.name,

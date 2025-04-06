@@ -24,9 +24,17 @@ _MODEL_POINTERS = {
     "claude-3-5-haiku": "claude-3-5-haiku-20241022",
     "claude-3-5-sonnet": "claude-3-5-sonnet-20241022",
     "claude-3-7-sonnet": "claude-3-7-sonnet-20250219",
+    "deepseek-chat": "deepseek-chat",
 }
 
 _MODEL_INFO: Dict[str, ModelInfo] = {
+    "deepseek-chat": {
+        "vision": False,
+        "function_calling": True,
+        "json_output": True,
+        "family": ModelFamily.GPT_4,  # Using GPT-4 family as a placeholder
+        "structured_output": True,
+    },
     "o3-mini-2025-01-31": {
         "vision": False,
         "function_calling": True,
@@ -247,6 +255,7 @@ _MODEL_INFO: Dict[str, ModelInfo] = {
 }
 
 _MODEL_TOKEN_LIMITS: Dict[str, int] = {
+    "deepseek-chat": 32768,  # Assuming a reasonable token limit for DeepSeek
     "o3-mini-2025-01-31": 200000,
     "o1-2024-12-17": 200000,
     "o1-preview-2024-09-12": 128000,
@@ -282,6 +291,7 @@ _MODEL_TOKEN_LIMITS: Dict[str, int] = {
 
 GEMINI_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 ANTHROPIC_OPENAI_BASE_URL = "https://api.anthropic.com/v1/"
+DEEPSEEK_OPENAI_BASE_URL = "https://api.deepseek.com/v1/"
 
 
 def resolve_model(model: str) -> str:
@@ -292,9 +302,21 @@ def resolve_model(model: str) -> str:
 
 def get_info(model: str) -> ModelInfo:
     resolved_model = resolve_model(model)
+    if resolved_model in _MODEL_INFO:
+        return _MODEL_INFO[resolved_model]
+    
+    if model.startswith("deepseek-"):
+        return _MODEL_INFO["deepseek-chat"]
+    
     return _MODEL_INFO[resolved_model]
 
 
 def get_token_limit(model: str) -> int:
     resolved_model = resolve_model(model)
+    if resolved_model in _MODEL_TOKEN_LIMITS:
+        return _MODEL_TOKEN_LIMITS[resolved_model]
+    
+    if model.startswith("deepseek-"):
+        return _MODEL_TOKEN_LIMITS["deepseek-chat"]
+    
     return _MODEL_TOKEN_LIMITS[resolved_model]

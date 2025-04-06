@@ -9,10 +9,27 @@ from typing import Dict, List, Optional, Set, Tuple, Any, Callable, Union
 import git
 from git import Repo, Commit
 
-from autogen_agentchat.agents import AssistantAgent
-from autogen_agentchat.messages import TextMessage
+from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_core import CancellationToken
 from autogen_core.tools import BaseTool, FunctionTool
+
+class BaseAgent:
+    """Base class for the GitHistoryAnalyzerAgent."""
+    
+    def __init__(self, name, system_message, model_client, tools, **kwargs):
+        self.name = name
+        self.system_message = system_message
+        self.model_client = model_client
+        self.tools = tools
+        
+    async def run(self, task, cancellation_token=None):
+        """Run a task using the model client."""
+        response = await self.model_client.complete(
+            messages=[{"role": "system", "content": self.system_message},
+                     {"role": "user", "content": task}],
+            temperature=0.7,
+        )
+        return response.choices[0].message.content
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 from ._git_tools import GitTools
@@ -50,7 +67,7 @@ class CommitGroup:
     related_issue: Optional[int] = None
 
 
-class GitHistoryAnalyzerAgent(AssistantAgent):
+class GitHistoryAnalyzerAgent(BaseAgent):
     """An agent that analyzes git repository history and suggests improvements.
     
     This agent can analyze commit messages, identify related commits for squashing,

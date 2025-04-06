@@ -33,6 +33,9 @@ class CodeRepositoryAgentConfig(BaseModel):
     )
 
 class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
+    """Agent for code repository vectorization and querying."""
+    
+    component_type = "code_repository_agent"
     """Agent for code repository vectorization and querying.
     
     This agent extends AssistantAgent and provides functionality to vectorize and query
@@ -111,8 +114,8 @@ class CodeRepositoryAgent(Component[CodeRepositoryAgentConfig]):
             logger.info("Repository already vectorized. Ready to answer questions.")
         
         if self._assistant_agent is None:
-            from autogen_core._component_config import ComponentConfig
-            model_client = ComponentConfig.load_component(self._config.model_client)
+            from autogen_core._component_config import ComponentLoader
+            model_client = ComponentLoader.load_component(self._config.model_client)
             
             self._assistant_agent = AssistantAgent(
                 name=self._config.name,

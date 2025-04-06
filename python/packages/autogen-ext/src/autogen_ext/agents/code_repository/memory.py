@@ -11,6 +11,7 @@ from autogen_core.memory import Memory, MemoryContent, MemoryMimeType, MemoryQue
 from autogen_core.model_context import ChatCompletionContext
 from autogen_core.models import SystemMessage
 from autogen_ext.memory.chromadb import ChromaDBVectorMemory, PersistentChromaDBVectorMemoryConfig
+from chromadb.api.types import Include
 from pydantic import BaseModel, Field
 from typing_extensions import Self
 

@@ -76,7 +76,7 @@ async def merge_related_commits():
     # Initialize with DeepSeek API
     model_client = OpenAIChatCompletionClient(
         model="deepseek-chat",
-        api_key="sk-e76adaf1f70a4c11ac66f380e25e9c16",
+        api_key="your_deepseek_api_key",
         api_base="https://api.deepseek.com/v1"
     )
     
@@ -363,7 +363,7 @@ model_client = OpenAIChatCompletionClient(
 # Using DeepSeek
 model_client = OpenAIChatCompletionClient(
     model="deepseek-chat",
-    api_key="sk-e76adaf1f70a4c11ac66f380e25e9c16",
+    api_key="your_deepseek_api_key",
     api_base="https://api.deepseek.com/v1"
 )
 

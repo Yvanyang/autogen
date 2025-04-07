@@ -87,7 +87,11 @@ def mock_model_client():
 @pytest.mark.asyncio
 async def test_commit_analysis_agent_initialization(temp_repo, db_dir, mock_model_client):
     """Test initialization of CommitAnalysisAgent."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -112,7 +116,11 @@ async def test_commit_analysis_agent_initialization(temp_repo, db_dir, mock_mode
 @pytest.mark.asyncio
 async def test_get_file_changes(temp_repo, db_dir, mock_model_client):
     """Test getting file changes from a commit."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -143,7 +151,11 @@ async def test_get_file_changes(temp_repo, db_dir, mock_model_client):
 @pytest.mark.asyncio
 async def test_find_test_items(temp_repo, db_dir, mock_model_client):
     """Test finding test items for file changes."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -181,7 +193,11 @@ async def test_find_test_items(temp_repo, db_dir, mock_model_client):
 @pytest.mark.asyncio
 async def test_analyze_commit(temp_repo, db_dir, mock_model_client):
     """Test analyzing a commit."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -215,7 +231,11 @@ async def test_analyze_commit(temp_repo, db_dir, mock_model_client):
 @pytest.mark.asyncio
 async def test_analyze_latest_commit(temp_repo, db_dir, mock_model_client):
     """Test analyzing the latest commit."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -245,7 +265,11 @@ async def test_analyze_latest_commit(temp_repo, db_dir, mock_model_client):
 @pytest.mark.asyncio
 async def test_generate_report(temp_repo, db_dir, mock_model_client):
     """Test generating a report."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         agent = CommitAnalysisAgent(
             config=CommitAnalysisConfig(
                 name="test_agent",
@@ -311,7 +335,11 @@ async def test_generate_report(temp_repo, db_dir, mock_model_client):
 @pytest.mark.asyncio
 async def test_component_serialization(temp_repo, db_dir, mock_model_client):
     """Test component serialization."""
-    with patch("autogen_core.load_component", return_value=mock_model_client):
+    with patch("autogen_ext.agents.code_repository.agent.CodeRepositoryAgent") as mock_agent_class:
+        mock_agent_class.return_value = MagicMock()
+        mock_agent_class.return_value.prepare = AsyncMock(return_value=True)
+        mock_agent_class.return_value.run = AsyncMock(return_value="Mock response")
+        mock_agent_class.return_value.close = AsyncMock()
         config = CommitAnalysisConfig(
             name="test_agent",
             repository_path=temp_repo,

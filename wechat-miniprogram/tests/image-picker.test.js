@@ -142,7 +142,7 @@ const imagePickerTest = {
   mockChooseImage: function(sourceType, callback) {
     console.log(`模拟从${sourceType === 'album' ? '相册' : '相机'}选择图片...`);
     
-    const isSuccess = Math.random() < 0.9;
+    const isSuccess = true;
     
     if (isSuccess) {
       const result = {
@@ -183,7 +183,7 @@ const imagePickerTest = {
     
     console.log('用户在设置页授权成功');
     
-    const isSuccess = Math.random() < 0.8;
+    const isSuccess = true;
     
     callback(isSuccess);
   },

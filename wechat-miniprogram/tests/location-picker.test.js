@@ -179,7 +179,7 @@ const locationPickerTest = {
   mockMarkerPlacement: function(callback) {
     console.log('模拟标记放置...');
     
-    const isSuccess = Math.random() < 0.98;
+    const isSuccess = true;
     
     if (isSuccess) {
       console.log('标记放置成功');

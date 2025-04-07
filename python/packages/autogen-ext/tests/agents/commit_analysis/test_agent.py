@@ -72,11 +72,15 @@ def mock_model_client():
     """Create a mock model client."""
     mock_client = MagicMock()
     mock_client.create = AsyncMock(return_value="This is a mock response")
-    mock_client.dump_component = MagicMock(return_value=Component.from_dict({
+    
+    mock_component = MagicMock()
+    mock_component.model_dump = MagicMock(return_value={
         "provider": "mock",
         "type": "model_client",
         "config": {}
-    }))
+    })
+    
+    mock_client.dump_component = MagicMock(return_value=mock_component)
     return mock_client
 
 

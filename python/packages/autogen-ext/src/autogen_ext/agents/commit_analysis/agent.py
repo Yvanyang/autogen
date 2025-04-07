@@ -254,12 +254,15 @@ class CommitAnalysisAgent(ComponentBase[CommitAnalysisConfig], Component[CommitA
         """Get file changes for a commit.
         
         Args:
-            commit: Git commit object
+            commit: Git commit object or commit hash
             
         Returns:
             List[FileChange]: List of file changes
         """
         file_changes = []
+        
+        if isinstance(commit, str):
+            commit = self._repo.commit(commit)
         
         if not commit.parents:
             return file_changes

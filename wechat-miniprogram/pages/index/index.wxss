@@ -1,0 +1,178 @@
+/* pages/index/index.wxss */
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+}
+
+.action-item {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.chat-list {
+  flex: 1;
+  height: 0;
+}
+
+.chat-item {
+  display: flex;
+  padding: 12px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.avatar-container {
+  position: relative;
+  margin-right: 12px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  background-color: #ff5252;
+  color: #fff;
+  border-radius: 9px;
+  font-size: 12px;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.name-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.time {
+  font-size: 12px;
+  color: #999;
+}
+
+.message-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: center;
+  max-width: 85%;
+}
+
+.message-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.message {
+  font-size: 14px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: #999;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.loading-text {
+  font-size: 14px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.empty-icon {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #999;
+}

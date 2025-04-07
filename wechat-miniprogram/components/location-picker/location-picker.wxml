@@ -1,0 +1,60 @@
+<!--components/location-picker/location-picker.wxml-->
+<view class="location-picker">
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <image class="search-icon" src="/images/search.png" mode="aspectFit"></image>
+      <input 
+        class="search-input" 
+        value="{{searchValue}}" 
+        bindinput="onSearchInput" 
+        placeholder="搜索位置" 
+        confirm-type="search"
+        bindconfirm="searchLocation"
+      ></input>
+      <view class="clear-button" bindtap="clearSearch" wx:if="{{searchValue.length > 0}}">
+        <image class="clear-icon" src="/images/clear.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="search-button" bindtap="searchLocation">搜索</view>
+  </view>
+  
+  <view class="map-container">
+    <map
+      id="map"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      show-location="{{showLocation}}"
+      bindtap="onMapTap"
+      bindregionchange="onRegionChange"
+      style="width: 100%; height: 100%;"
+    ></map>
+    
+    <view class="map-controls">
+      <view class="control-button" bindtap="getCurrentLocation">
+        <image class="control-icon" src="/images/current-location.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <view class="center-marker">
+      <image class="marker-icon" src="/images/center-marker.png" mode="aspectFit"></image>
+    </view>
+  </view>
+  
+  <view class="location-info" wx:if="{{selectedLocation}}">
+    <view class="location-details">
+      <view class="location-name">{{selectedLocation.name || '所选位置'}}</view>
+      <view class="location-address">{{selectedLocation.address || ''}}</view>
+    </view>
+    <view class="action-buttons">
+      <view class="cancel-button" bindtap="cancelSelection">取消</view>
+      <view class="confirm-button" bindtap="confirmLocation">确定</view>
+    </view>
+  </view>
+  
+  <view class="loading-overlay" wx:if="{{isSearching}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">搜索中...</text>
+  </view>
+</view>

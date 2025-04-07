@@ -1,0 +1,117 @@
+<!--pages/chat/chat.wxml-->
+<view class="container">
+  <scroll-view 
+    class="message-list" 
+    scroll-y="true" 
+    enable-back-to-top="true"
+    scroll-anchoring="true"
+    id="message-list">
+    
+    <view class="loading" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="message-item {{item.isSelf ? 'self' : 'other'}}">
+        <image 
+          class="avatar" 
+          src="{{item.isSelf ? '/images/user-avatar.png' : chatInfo.avatar}}" 
+          mode="aspectFill">
+        </image>
+        
+        <view class="message-content">
+          <!-- Text message -->
+          <view class="message-bubble text" wx:if="{{item.type === 'text'}}">
+            <text>{{item.content}}</text>
+          </view>
+          
+          <!-- Image message -->
+          <view class="message-bubble image" wx:elif="{{item.type === 'image'}}" bindtap="previewImage" data-url="{{item.imageUrl}}">
+            <image src="{{item.imageUrl}}" mode="widthFix"></image>
+          </view>
+          
+          <!-- Location message -->
+          <view class="message-bubble location" wx:elif="{{item.type === 'location'}}" bindtap="viewLocation" data-location="{{item.location}}">
+            <view class="location-name">{{item.location.name || '位置信息'}}</view>
+            <view class="location-address">{{item.location.address || '查看详细地址'}}</view>
+            <view class="location-map">
+              <map
+                latitude="{{item.location.latitude}}"
+                longitude="{{item.location.longitude}}"
+                markers="{{[{latitude: item.location.latitude, longitude: item.location.longitude}]}}"
+                scale="16"
+                style="width: 100%; height: 120px;"
+                show-location="true"
+              ></map>
+            </view>
+          </view>
+          
+          <view class="message-status" wx:if="{{item.isSelf}}">
+            <text class="status-text" wx:if="{{item.status === 'sending'}}">发送中...</text>
+            <image class="status-icon" src="/images/sent.png" wx:elif="{{item.status === 'sent'}}"></image>
+          </view>
+          
+          <text class="message-time">{{item.time}}</text>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+  
+  <view class="input-area">
+    <view class="input-actions">
+      <image class="action-icon" src="/images/voice.png" mode="aspectFit"></image>
+    </view>
+    
+    <view class="input-box">
+      <input 
+        class="input" 
+        value="{{inputValue}}" 
+        bindinput="onInputChange" 
+        confirm-type="send" 
+        bindconfirm="sendMessage" 
+        placeholder="输入消息..."
+        adjust-position="true"
+        cursor-spacing="10"
+      ></input>
+    </view>
+    
+    <view class="input-actions">
+      <image 
+        class="action-icon" 
+        src="/images/image.png" 
+        mode="aspectFit" 
+        bindtap="chooseImage"
+      ></image>
+    </view>
+    
+    <view class="input-actions">
+      <image 
+        class="action-icon" 
+        src="/images/location.png" 
+        mode="aspectFit" 
+        bindtap="chooseLocation"
+      ></image>
+    </view>
+    
+    <view class="send-button" bindtap="sendMessage">
+      <text>发送</text>
+    </view>
+  </view>
+  
+  <!-- Image picker component -->
+  <view class="image-picker-container" wx:if="{{showImagePicker}}">
+    <view class="image-picker-mask" bindtap="hideImagePicker"></view>
+    <view class="image-picker">
+      <!-- Image picker component will be implemented -->
+    </view>
+  </view>
+  
+  <!-- Location picker component -->
+  <view class="location-picker-container" wx:if="{{showLocationPicker}}">
+    <view class="location-picker-mask" bindtap="hideLocationPicker"></view>
+    <view class="location-picker">
+      <!-- Location picker component will be implemented -->
+    </view>
+  </view>
+</view>

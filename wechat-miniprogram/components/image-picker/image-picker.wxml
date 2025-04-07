@@ -1,0 +1,30 @@
+<!--components/image-picker/image-picker.wxml-->
+<view class="image-picker">
+  <view class="image-list">
+    <view class="image-item" wx:for="{{files}}" wx:key="path">
+      <image 
+        class="image" 
+        src="{{item.path}}" 
+        mode="aspectFill" 
+        bindtap="previewImage" 
+        data-index="{{index}}"
+      ></image>
+      <view class="delete-button" catchtap="deleteImage" data-index="{{index}}">
+        <image class="delete-icon" src="/images/delete.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <view class="add-button" bindtap="chooseImage" wx:if="{{files.length < count}}">
+      <image class="add-icon" src="/images/add-image.png" mode="aspectFit"></image>
+    </view>
+  </view>
+  
+  <view class="action-buttons">
+    <button class="upload-button" bindtap="uploadImages" loading="{{isUploading}}">上传图片</button>
+  </view>
+  
+  <view class="preview-container" wx:if="{{showPreview}}">
+    <view class="preview-mask" bindtap="hidePreview"></view>
+    <image class="preview-image" src="{{currentPreview}}" mode="aspectFit"></image>
+  </view>
+</view>

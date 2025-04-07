@@ -1,0 +1,61 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="title">聊天列表</view>
+    <view class="actions">
+      <view class="action-item">
+        <image class="icon" src="/images/search.png" mode="aspectFit"></image>
+      </view>
+      <view class="action-item">
+        <image class="icon" src="/images/add.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+  
+  <scroll-view 
+    class="chat-list" 
+    scroll-y="true" 
+    enable-back-to-top="true"
+    enable-flex="true"
+    scroll-anchoring="true"
+    refresher-enabled="true"
+    refresher-threshold="50"
+    refresher-default-style="black"
+    refresher-background="#f7f7f7"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore">
+    
+    <view class="chat-item" wx:for="{{chatList}}" wx:key="id" bindtap="navigateToChat" data-id="{{item.id}}">
+      <view class="avatar-container">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="badge" wx:if="{{item.unread > 0}}">{{item.unread}}</view>
+      </view>
+      <view class="content">
+        <view class="name-time">
+          <text class="name">{{item.name}}</text>
+          <text class="time">{{item.time}}</text>
+        </view>
+        <view class="message-container">
+          <view class="message-wrapper">
+            <image class="message-icon" wx:if="{{item.isImage}}" src="/images/image-icon.png" mode="aspectFit"></image>
+            <image class="message-icon" wx:if="{{item.isLocation}}" src="/images/location-icon.png" mode="aspectFit"></image>
+            <text class="message text-ellipsis">{{item.lastMessage}}</text>
+          </view>
+          <view class="message-status">
+            <image class="status-icon" src="/images/read.png" mode="aspectFit" wx:if="{{item.unread === 0}}"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="loading" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <view class="empty-state" wx:if="{{chatList.length === 0}}">
+      <image class="empty-icon" src="/images/empty-chat.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无聊天记录</text>
+    </view>
+  </scroll-view>
+</view>

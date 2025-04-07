@@ -1,0 +1,161 @@
+/* components/location-picker/location-picker.wxss */
+.location-picker {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-right: 12px;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.search-input {
+  flex: 1;
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.clear-button {
+  padding: 4px;
+}
+
+.clear-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.search-button {
+  font-size: 14px;
+  color: #07C160;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+.map-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 120px;
+  z-index: 2;
+}
+
+.control-button {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.control-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.center-marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.marker-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.location-info {
+  background-color: #fff;
+  padding: 16px;
+  border-top: 1px solid #eee;
+}
+
+.location-details {
+  margin-bottom: 12px;
+}
+
+.location-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.location-address {
+  font-size: 12px;
+  color: #666;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #666;
+  margin-right: 12px;
+}
+
+.confirm-button {
+  background-color: #07C160;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #666;
+}

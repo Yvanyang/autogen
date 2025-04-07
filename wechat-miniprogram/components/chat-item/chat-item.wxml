@@ -1,0 +1,23 @@
+<!--components/chat-item/chat-item.wxml-->
+<view class="chat-item {{customStyle}}" bindtap="onTap" bindlongpress="onLongPress">
+  <view class="avatar-container" catchtap="onAvatarTap">
+    <image class="avatar" src="{{item.avatar || defaultAvatar}}" mode="aspectFill"></image>
+    <view class="badge" wx:if="{{item.unread > 0}}">{{item.unread}}</view>
+  </view>
+  <view class="content">
+    <view class="name-time">
+      <text class="name">{{item.name}}</text>
+      <text class="time">{{item.time}}</text>
+    </view>
+    <view class="message-container">
+      <view class="message-wrapper">
+        <image class="message-icon" wx:if="{{item.isImage}}" src="/images/image-icon.png" mode="aspectFit"></image>
+        <image class="message-icon" wx:if="{{item.isLocation}}" src="/images/location-icon.png" mode="aspectFit"></image>
+        <text class="message text-ellipsis">{{item.lastMessage}}</text>
+      </view>
+      <view class="message-status">
+        <image class="status-icon" src="/images/read.png" mode="aspectFit" wx:if="{{item.unread === 0}}"></image>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "聊天列表",
+  "enablePullDownRefresh": false,
+  "disableScroll": true
+}

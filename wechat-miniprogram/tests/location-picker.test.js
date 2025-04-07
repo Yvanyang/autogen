@@ -197,7 +197,7 @@ const locationPickerTest = {
   mockLocationSelection: function(callback) {
     console.log('模拟位置选择...');
     
-    const isSuccess = Math.random() < 0.9;
+    const isSuccess = true;
     
     if (isSuccess) {
       const location = {

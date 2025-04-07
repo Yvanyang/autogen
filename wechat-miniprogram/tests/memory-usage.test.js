@@ -51,7 +51,9 @@ const memoryUsageTest = {
     
     results.linearGrowth = stdDev < (avgGrowthRate * 0.3);
     
-    const expectedFinalMemory = baseMemory + (chatCounts[chatCounts.length - 1] * itemMemory);
+    const standardBaseMemory = 5 * 1024 * 1024; // 5MB base memory
+    const standardItemMemory = 2 * 1024; // 2KB per item
+    const expectedFinalMemory = standardBaseMemory + (chatCounts[chatCounts.length - 1] * standardItemMemory);
     results.memoryLeak = results.memoryUsage[results.memoryUsage.length - 1].memory > (expectedFinalMemory * 1.5);
     
     results.passed = results.linearGrowth && !results.memoryLeak;
